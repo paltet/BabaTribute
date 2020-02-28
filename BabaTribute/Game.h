@@ -1,4 +1,5 @@
-#pragma once
+#include "Menu.h"
+
 class Game
 {
 public:
@@ -30,7 +31,7 @@ private:
 	//enum { STATE_MENU, STATE_PLAYING, STATE_CREDITS };
 	//int state;
 
-	//Menu menu;
+	Menu menu;
 	//Scene scene;
 	//Credits credits;
 	//Instructions instructions

@@ -3,6 +3,9 @@
 
 #include "Game.h"
 
+//Tools>NuGet Packet Manager>Packet Manager Console
+//Install-Package>nupengl.core
+
 
 //Remove console (only works in Visual Studio)
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")

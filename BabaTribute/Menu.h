@@ -1,3 +1,6 @@
+#ifndef _MENU_INCLUDE
+#define _MENU_INCLUDE
+
 
 #include "ShaderProgram.h"
 #include "TexturedQuad.h"
@@ -23,8 +26,11 @@ private:
 
 private:
 	float currentTime;
+	float margin = 200;
+
 	Text text;
 	TexturedQuad *pointer;
+	Texture tex;
 
 	enum {PLAY, HOWTO, ABOUT, EXIT};
 	int state;
@@ -34,3 +40,4 @@ private:
 	string options[4] = { "PLAY", "HOW TO PLAY", "CREDITS", "EXIT" };
 };
 
+#endif

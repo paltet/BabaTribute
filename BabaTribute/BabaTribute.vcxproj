@@ -78,7 +78,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>SOIL.lib;glew32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\libs\Simple OpenGL Image Library\projects\VC9\Debug;..\libs\freetype-2.3.5-1-bin\lib;..\libs\freeglut\lib;..\libs\glew-1.13.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\libs\Simple OpenGL Image Library\projects\VC9\Debug;..\..\libs\Simple OpenGL Image Library\projects\VC9\Debug;..\libs\freetype-2.3.5-1-bin\lib;..\..\libs\freetype-2.3.5-1-bin\lib;..\libs\freeglut\lib;..\..\libs\freeglut\lib;..\libs\glew-1.13.0\lib\Release\Win32;..\..\libs\glew-1.13.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>

@@ -1,3 +1,7 @@
+#ifndef _GAME_INCLUDE
+#define _GAME_INCLUDE
+
+
 #include "Menu.h"
 
 class Game
@@ -41,3 +45,4 @@ private:
 
 };
 
+#endif

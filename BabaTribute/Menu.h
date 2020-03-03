@@ -5,6 +5,7 @@
 #include "ShaderProgram.h"
 #include "TexturedQuad.h"
 #include "Text.h"
+#include "Sprite.h"
 
 #define CAMERA_WIDTH 480
 #define CAMERA_HEIGHT 480
@@ -29,7 +30,7 @@ private:
 	float margin = 200;
 
 	Text text;
-	TexturedQuad *pointer;
+	Sprite *pointer;
 	Texture tex;
 
 	enum {PLAY, HOWTO, ABOUT, EXIT};

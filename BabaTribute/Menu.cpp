@@ -18,15 +18,22 @@ Menu::~Menu()
 void Menu::init() {
 	currentTime = 0.f;
 	state = PLAY;
-
+	
 	initShaders();
+	tex.loadFromFile("images/baba.png", TEXTURE_PIXEL_FORMAT_RGBA);
 
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(128.f, 128.f) };
-	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f )};
+	pointer = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(1.f / 32.f, 1.f / 66.f), &tex, &texProgram);
+	//pointer = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+	pointer->setNumberAnimations(1);
 
-	pointer = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+	pointer->setAnimationSpeed(0, 8);
+	pointer->addKeyframe(0, glm::vec2(1.f / 32.f, 0.f));
+	pointer->addKeyframe(0, glm::vec2(1.f / 32.f, 1.f / 66.f));
+	pointer->addKeyframe(0, glm::vec2(1.f / 32.f, 2.f / 66.f));
 
-	tex.loadFromFile("images/icon.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	pointer->changeAnimation(0);
+	pointer->setPosition(glm::vec2(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2));
+
 
 	if (!text.init("fonts/INVASION2000.ttf"))
 		//if(!text.init("fonts/OpenSans-Bold.ttf"))
@@ -38,6 +45,8 @@ void Menu::init() {
 
 void Menu::update(int deltaTime) {
 	currentTime += deltaTime;
+	pointer->update(deltaTime);
+
 
 	if (currentTime > margin) {
 		if (Game::instance().getSpecialKey(GLUT_KEY_UP))
@@ -64,14 +73,14 @@ void Menu::render() {
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-	modelview = glm::translate(glm::mat4(1.0f), glm::vec3(CAMERA_WIDTH / 2 -130 - 40, CAMERA_HEIGHT / 3 - 8 + 50 * state, 0));
-	modelview = glm::scale(modelview, glm::vec3(40.f / 128.f, 40.f / 128.f, 0));
-	modelview = glm::translate(modelview, glm::vec3(-64.f, -64.f, 0.f));
+	modelview = glm::mat4(1.f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
-	pointer->render(tex);
+	pointer->render();
+
+	//pointer->render(tex);
 
 	for (int i = 0; i < 4; i++) {
-		text.render(options[i], glm::vec2(CAMERA_WIDTH / 2 - 130, CAMERA_HEIGHT/3 + 50*i), TEXT_SIZE, glm::vec4(1.f, 1.f, 1.f, 1.f));
+		//text.render(options[i], glm::vec2(CAMERA_WIDTH / 2 - 130, CAMERA_HEIGHT/3 + 50*i), TEXT_SIZE, glm::vec4(1.f, 1.f, 1.f, 1.f));
 	}
 }
 

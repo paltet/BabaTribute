@@ -27,9 +27,9 @@ void Menu::init() {
 	pointer->setNumberAnimations(1);
 
 	pointer->setAnimationSpeed(0, 4);
-	pointer->addKeyframe(0, glm::vec2(1.f / 32.f, 0.f));
-	pointer->addKeyframe(0, glm::vec2(1.f / 32.f, 1.f / 66.f));
-	pointer->addKeyframe(0, glm::vec2(1.f / 32.f, 2.f / 66.f));
+	pointer->addKeyframe(0, glm::vec2(0.f / 32.f, 0.f));
+	pointer->addKeyframe(0, glm::vec2(0.f / 32.f, 1.f / 66.f));
+	pointer->addKeyframe(0, glm::vec2(0.f / 32.f, 2.f / 66.f));
 
 	pointer->changeAnimation(0);
 	pointer->setPosition(glm::vec2(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2));

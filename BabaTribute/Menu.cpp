@@ -27,9 +27,9 @@ void Menu::init() {
 	pointer->setNumberAnimations(1);
 
 	pointer->setAnimationSpeed(0, 4);
-	pointer->addKeyframe(0, glm::vec2(0.f / 32.f, 0.f));
-	pointer->addKeyframe(0, glm::vec2(0.f / 32.f, 1.f / 66.f));
-	pointer->addKeyframe(0, glm::vec2(0.f / 32.f, 2.f / 66.f));
+	pointer->addKeyframe(0, glm::vec2(0.f / 32.f, 3.f / 66.f));
+	pointer->addKeyframe(0, glm::vec2(0.f / 32.f, 4.f / 66.f));
+	pointer->addKeyframe(0, glm::vec2(0.f / 32.f, 5.f / 66.f));
 
 	pointer->changeAnimation(0);
 	pointer->setPosition(glm::vec2(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2));
@@ -74,6 +74,7 @@ void Menu::render() {
 
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	//0.054, 0.356, 0.505
 
 	modelview = glm::mat4(1.f);
 	texProgram.setUniformMatrix4f("modelview", modelview);

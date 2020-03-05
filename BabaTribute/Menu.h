@@ -36,7 +36,7 @@ private:
 	enum {PLAY, HOWTO, ABOUT, EXIT};
 	int state;
 
-	ShaderProgram simpleProgram, texProgram;
+	ShaderProgram texProgram;
 	glm::mat4 projection;
 	string options[4] = { "PLAY", "HOW TO PLAY", "CREDITS", "EXIT" };
 };

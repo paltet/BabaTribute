@@ -32,10 +32,11 @@ public:
 
 private:
 	bool bPlay;
-	//enum { STATE_MENU, STATE_PLAYING, STATE_CREDITS };
-	//int state;
+	enum { STATE_MENU, STATE_PLAYING, STATE_HOWTO, STATE_CREDITS };
+	int state;
 
 	Menu menu;
+	//HowTo howto;
 	//Scene scene;
 	//Credits credits;
 	//Instructions instructions

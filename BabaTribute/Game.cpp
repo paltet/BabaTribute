@@ -4,6 +4,7 @@
 
 void Game::init() {
 
+	state = STATE_MENU;
 	bPlay = true;
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	menu.init();

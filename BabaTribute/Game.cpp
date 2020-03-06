@@ -13,7 +13,26 @@ void Game::init() {
 
 bool Game::update(int deltaTime) {
 
-	menu.update(deltaTime);
+	switch (state) {
+
+	case STATE_MENU:
+		menu.update(deltaTime);
+		switch (menu.state) {
+		case HOWTO:
+			if (getKey(13)) {
+				howto.init();
+				state = STATE_HOWTO;
+			}
+			break;
+		}
+		break;
+
+	case STATE_HOWTO:
+		howto.update(deltaTime);
+		if (howto.ret) {
+			state = STATE_MENU;
+		}
+	}
 	return bPlay;
 
 }
@@ -21,7 +40,14 @@ bool Game::update(int deltaTime) {
 void Game::render() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	menu.render();
+	switch (state) {
+	case STATE_MENU:
+		menu.render();
+		break;
+	case STATE_HOWTO:
+		howto.render();
+		break;
+	}
 }
 
 void Game::keyPressed(int key)

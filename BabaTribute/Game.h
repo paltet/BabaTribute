@@ -3,6 +3,12 @@
 
 
 #include "Menu.h"
+#include "HowTo.h"
+
+#define CAMERA_WIDTH 480
+#define CAMERA_HEIGHT 480
+
+#define MARGIN 200
 
 class Game
 {
@@ -32,11 +38,16 @@ public:
 
 private:
 	bool bPlay;
+
+	//Game state
 	enum { STATE_MENU, STATE_PLAYING, STATE_HOWTO, STATE_CREDITS };
 	int state;
 
+	//Menu state
+	enum { PLAY, HOWTO, ABOUT, EXIT };
+
 	Menu menu;
-	//HowTo howto;
+	HowTo howto;
 	//Scene scene;
 	//Credits credits;
 	//Instructions instructions

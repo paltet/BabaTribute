@@ -46,8 +46,9 @@ void Menu::init() {
 void Menu::update(int deltaTime) {
 	currentTime += deltaTime;
 	pointer->update(deltaTime);
+	pointer->setPosition(glm::vec2(CAMERA_WIDTH / 2 - 130 - 48, CAMERA_HEIGHT / 3 + 50 * state - 25));
 
-	if (currentTime > margin) {
+	if (currentTime > MARGIN) {
 		if (Game::instance().getSpecialKey(GLUT_KEY_UP))
 		{
 			if (state != PLAY) state--;
@@ -62,8 +63,6 @@ void Menu::update(int deltaTime) {
 	if (Game::instance().getKey(13) && state == EXIT) {
 		exit(0);
 	}
-
-	pointer->setPosition(glm::vec2(CAMERA_WIDTH / 2 - 130 - 48, CAMERA_HEIGHT / 3 + 50 * state - 25));
 }
 
 void Menu::render() {
@@ -71,7 +70,6 @@ void Menu::render() {
 	glm::mat4 modelview;
 
 	texProgram.use();
-
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
 	//0.054, 0.356, 0.505
@@ -81,7 +79,7 @@ void Menu::render() {
 	pointer->render();
 
 	for (int i = 0; i < 4; i++) {
-		text.render(options[i], glm::vec2(CAMERA_WIDTH / 2 - 130, CAMERA_HEIGHT/3 + 50*i), TEXT_SIZE, glm::vec4(1.f, 1.f, 1.f, 1.f));
+		text.render(options[i], glm::vec2(CAMERA_WIDTH / 2 - 130, CAMERA_HEIGHT/3 + 50*i), MENU_TEXT_SIZE, glm::vec4(1.f, 1.f, 1.f, 1.f));
 	}
 }
 

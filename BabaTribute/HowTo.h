@@ -8,6 +8,7 @@
 
 #define HOWTO_TEXT_SIZE 16
 #define MARGIN 200
+#define SPRITE_SIZE 48
 
 class HowTo
 {

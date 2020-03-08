@@ -8,7 +8,7 @@
 
 #define HOWTO_TEXT_SIZE 16
 #define MARGIN 200
-#define SPRITE_SIZE 48
+#define SPRITE_SIZE 40
 
 class HowTo
 {
@@ -31,15 +31,25 @@ private:
 	void loadIs();
 	void loadRed();
 	void loadRocks();
+	void loadExpression();
+	void loadKeys();
 
 private:
-	float currentTime, retTime;
+	float currentTime, retTime, animTime;
 
-	Text back;
-	Sprite *keke, *rock, *is, *red;
-	Sprite *rocks[4];
+	Text text;
+	Sprite *keke, *rock, *is, *red, *expression;
+	Sprite *rocks[3];
+
+	Sprite *keys;
+
+	enum { KEKE_SLEEP, KEKE_WALKS, KEKE_LOOKS };
+
+	enum {SLEEP, WALKS_1, WALKS_2, LOOKS};
+	int animation_state;
 
 	Texture tex;
+	Texture keyTex;
 	ShaderProgram texProgram;
 	
 	glm::mat4 projection;

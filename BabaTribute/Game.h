@@ -4,6 +4,7 @@
 
 #include "Menu.h"
 #include "HowTo.h"
+#include "Scene.h"
 
 #define CAMERA_WIDTH 480
 #define CAMERA_HEIGHT 480
@@ -48,7 +49,7 @@ private:
 
 	Menu menu;
 	HowTo howto;
-	//Scene scene;
+	Scene scene;
 	//Credits credits;
 	//Instructions instructions
 

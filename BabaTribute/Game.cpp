@@ -24,7 +24,17 @@ bool Game::update(int deltaTime) {
 				state = STATE_HOWTO;
 			}
 			break;
+		case PLAY:
+			if (getKey(13)) {
+				scene.init();
+				state = STATE_PLAYING;
+			}
+			break;
 		}
+		break;
+
+	case STATE_PLAYING:
+		scene.update(deltaTime);
 		break;
 
 	case STATE_HOWTO:
@@ -32,6 +42,7 @@ bool Game::update(int deltaTime) {
 		if (howto.ret) {
 			state = STATE_MENU;
 		}
+		break;
 	}
 	return bPlay;
 
@@ -46,6 +57,9 @@ void Game::render() {
 		break;
 	case STATE_HOWTO:
 		howto.render();
+		break;
+	case STATE_PLAYING:
+		scene.render();
 		break;
 	}
 }

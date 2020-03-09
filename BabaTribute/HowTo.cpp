@@ -38,7 +38,6 @@ HowTo::~HowTo()
 void HowTo::init() {
 	currentTime = 0.f;
 	animTime = 0.f;
-	ret = false;
 	retTime = NULL;
 	animation_state = SLEEP;
 	
@@ -72,13 +71,6 @@ void HowTo::update(int deltaTime) {
 		else animation_state++;
 	}
 	
-
-	if (Game::instance().getKey(13)) {
-		retTime = currentTime;
-	}
-
-	if (retTime != NULL && currentTime > retTime + MARGIN) ret = true;
-
 	keke->update(deltaTime);
 	rock->update(deltaTime);
 	is->update(deltaTime);

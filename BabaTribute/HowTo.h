@@ -20,9 +20,6 @@ public:
 	void update(int deltaTime);
 	void render();
 
-public:
-	bool ret;
-
 private:
 	void initShaders();
 

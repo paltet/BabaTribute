@@ -5,6 +5,7 @@
 #include "Menu.h"
 #include "HowTo.h"
 #include "Scene.h"
+#include "Input.h"
 
 #define CAMERA_WIDTH 480
 #define CAMERA_HEIGHT 480
@@ -37,6 +38,8 @@ public:
 	bool getKey(int key) const;
 	bool getSpecialKey(int key) const;
 
+	Input input;
+
 private:
 	bool bPlay;
 
@@ -46,6 +49,7 @@ private:
 
 	//Menu state
 	enum { PLAY, HOWTO, ABOUT, EXIT };
+
 
 	Menu menu;
 	HowTo howto;

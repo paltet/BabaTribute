@@ -60,7 +60,7 @@ void Menu::update(int deltaTime) {
 			currentTime = 0;
 		}
 	}
-	if (Game::instance().getKey(13) && state == EXIT) {
+	if (Game::instance().input.getKey(13) == Game::instance().input.KEY_PRESSED && state == EXIT) {
 		exit(0);
 	}
 }

@@ -8,10 +8,13 @@ void Game::init() {
 	bPlay = true;
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	menu.init();
+	input.init();
 
 }
 
 bool Game::update(int deltaTime) {
+
+	input.update(keys);
 
 	switch (state) {
 
@@ -19,13 +22,13 @@ bool Game::update(int deltaTime) {
 		menu.update(deltaTime);
 		switch (menu.state) {
 		case HOWTO:
-			if (getKey(13)) {
+			if (input.getKey(13) == input.KEY_PRESSED) {
 				howto.init();
 				state = STATE_HOWTO;
 			}
 			break;
 		case PLAY:
-			if (getKey(13)) {
+			if (input.getKey(13) == input.KEY_PRESSED) {
 				scene.init();
 				state = STATE_PLAYING;
 			}
@@ -39,7 +42,7 @@ bool Game::update(int deltaTime) {
 
 	case STATE_HOWTO:
 		howto.update(deltaTime);
-		if (howto.ret) {
+		if (input.getKey(13) == input.KEY_PRESSED) {
 			state = STATE_MENU;
 		}
 		break;

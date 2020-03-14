@@ -16,16 +16,15 @@ Texture::Texture()
 
 bool Texture::loadFromFile(const string &filename, PixelFormat format)
 {
-	int width, height;
 	unsigned char *image = NULL;
 
 	switch (format)
 	{
 	case TEXTURE_PIXEL_FORMAT_RGB:
-		image = SOIL_load_image(filename.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+		image = SOIL_load_image(filename.c_str(), &widthTex, &heightTex, 0, SOIL_LOAD_RGB);
 		break;
 	case TEXTURE_PIXEL_FORMAT_RGBA:
-		image = SOIL_load_image(filename.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
+		image = SOIL_load_image(filename.c_str(), &widthTex, &heightTex, 0, SOIL_LOAD_RGBA);
 		break;
 	}
 	if (image == NULL)
@@ -35,10 +34,10 @@ bool Texture::loadFromFile(const string &filename, PixelFormat format)
 	switch (format)
 	{
 	case TEXTURE_PIXEL_FORMAT_RGB:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthTex, heightTex, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 		break;
 	case TEXTURE_PIXEL_FORMAT_RGBA:
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthTex, heightTex, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 		break;
 	}
 	glGenerateMipmap(GL_TEXTURE_2D);

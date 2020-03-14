@@ -36,7 +36,11 @@ public:
 
 	void use() const;
 
+	int width() const { return widthTex; }
+	int height() const { return heightTex; }
+
 private:
+	int widthTex, heightTex;
 	GLuint texId;
 	GLint wrapS, wrapT, minFilter, magFilter;
 
@@ -44,3 +48,4 @@ private:
 
 
 #endif // _TEXTURE_INCLUDE
+

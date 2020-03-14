@@ -1,19 +1,27 @@
 #include "Scene.h"
+#include "Game.h"
 #include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
+#include <GL/glew.h>
+#include <GL/glut.h>
 
 
 Scene::Scene()
 {
+	map = nullptr;
 }
 
 
 Scene::~Scene()
 {
+	if (map != nullptr) map = nullptr;
 }
 
 void Scene::init() {
 	currentTime = 0.f;
 	initShaders();
+	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(0, 0), texProgram);
+	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 }
 
 void Scene::update(int deltaTime) {
@@ -29,6 +37,7 @@ void Scene::render() {
 
 	modelview = glm::mat4(1.f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
+	map->render();
 }
 
 void Scene::initShaders() {

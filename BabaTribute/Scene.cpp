@@ -1,6 +1,9 @@
 #include "Scene.h"
 #include "Game.h"
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -8,19 +11,18 @@
 
 Scene::Scene()
 {
-	map = nullptr;
+	//map = nullptr;
 }
 
 
 Scene::~Scene()
 {
-	if (map != nullptr) map = nullptr;
+	//if (map != nullptr) map = nullptr;
 }
 
 void Scene::init() {
 	currentTime = 0.f;
 	initShaders();
-	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(0, 0), texProgram);
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 }
 
@@ -37,7 +39,7 @@ void Scene::render() {
 
 	modelview = glm::mat4(1.f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
-	map->render();
+	//map->render();
 }
 
 void Scene::initShaders() {
@@ -67,4 +69,39 @@ void Scene::initShaders() {
 	texProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
+}
+
+bool Scene::loadLevel(const string &levelFile) {
+
+	ifstream fin;
+	string line;
+	stringstream sstream;
+	char tile;
+
+	fin.open(levelFile.c_str());
+	if (!fin.is_open()) return false;
+
+	getline(fin, line);
+	if (line.compare(0, 5, "LEVEL") != 0) return false;
+
+	getline(fin, line);
+	sstream.str(line);
+	sstream >> mapSize.x >> mapSize.y;
+
+	map = new int[mapSize.x * mapSize.y];
+
+	for (int j = 0; j < mapSize.y; j++) {
+		for (int i = 0; i < mapSize.x; i++) {
+			fin.get(tile);
+			if (tile == ' ') map[j * mapSize.x + i] = 0;
+			else map[j * mapSize.x + i] = tile;
+		}
+		fin.get(tile);
+#ifndef _WIN32
+		fin.get(tile);
+#endif
+	}
+	fin.close();
+
+	return true;
 }

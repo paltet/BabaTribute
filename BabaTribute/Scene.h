@@ -2,7 +2,7 @@
 #define _SCENE_INCLUDE
 
 #include "ShaderProgram.h"
-#include "TileMap.h"
+
 
 class Scene
 {
@@ -21,10 +21,14 @@ private:
 private:
 
 	float currentTime;
-
-	TileMap *map;
 	ShaderProgram texProgram;
-
 	glm::mat4 projection;
+
+	bool loadLevel(const string &levelName);
+	int *map;
+
+	glm::vec2 tileSize;
+
+	Sprite* entities[];
 };
 #endif

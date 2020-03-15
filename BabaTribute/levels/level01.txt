@@ -1,20 +1,20 @@
 TILEMAP
 15 15 							-- Size of tile map in tiles
 32 32 							-- Tile size & block size
-images/baba.png 	-- Tilesheet
-32 66 								-- Number of tiles in tilesheet
-123456789123456
-1             1
-1             1
-1             1
-1             1
-1             1
-1             1
-1             1
-1             1
-1             1
-1             1
-1             1
-1             1
-1             1
-111111111111111
+images/baba_walls.png 	-- Tilesheet
+8 1 								-- Number of tiles in tilesheet
+               
+               
+               
+               
+               
+               
+               
+               
+         1     
+               
+               
+               
+               
+               
+               

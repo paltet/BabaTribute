@@ -1,0 +1,17 @@
+LEVEL
+15 15
+abcde          
+fghij          
+               
+kl             
+               
+mnopq          
+               
+               
+               
+               
+               
+               
+               
+               
+               

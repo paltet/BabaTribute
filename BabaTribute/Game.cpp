@@ -14,7 +14,7 @@ void Game::init() {
 
 bool Game::update(int deltaTime) {
 
-	input.update(keys);
+	input.update(keys, specialKeys);
 
 	switch (state) {
 

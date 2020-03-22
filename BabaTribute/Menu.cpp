@@ -48,17 +48,15 @@ void Menu::update(int deltaTime) {
 	pointer->update(deltaTime);
 	pointer->setPosition(glm::vec2(CAMERA_WIDTH / 2 - 130 - 48, CAMERA_HEIGHT / 3 + 50 * state - 25));
 
-	if (currentTime > MARGIN) {
-		if (Game::instance().getSpecialKey(GLUT_KEY_UP))
-		{
-			if (state != PLAY) state--;
-			currentTime = 0;
-		}
-		else if (Game::instance().getSpecialKey(GLUT_KEY_DOWN))
-		{
-			if (state != EXIT) state++;
-			currentTime = 0;
-		}
+	if (Game::instance().input.getSpecialKey(GLUT_KEY_UP) == Game::instance().input.KEY_PRESSED)
+	{
+		if (state != PLAY) state--;
+		currentTime = 0;
+	}
+	else if (Game::instance().input.getSpecialKey(GLUT_KEY_DOWN) == Game::instance().input.KEY_PRESSED)
+	{
+		if (state != EXIT) state++;
+		currentTime = 0;
 	}
 	if (Game::instance().input.getKey(13) == Game::instance().input.KEY_PRESSED && state == EXIT) {
 		exit(0);

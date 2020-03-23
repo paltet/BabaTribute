@@ -18,8 +18,10 @@
 #include "Input.h"
 #include "Texture.h"
 
+#include <set>
 
-typedef vector<vector<Entity*>> EntityMap;
+
+typedef vector<vector<vector<Entity*>>> EntityMap;
 
 class Scene
 {
@@ -41,29 +43,27 @@ private:
 
 	bool look(int i, int j, direction d);
 	void move(direction d);
+	string getId(Entity* p);
 
 private:
 
 	float currentTime;
 	ShaderProgram texProgram;
 	glm::mat4 projection;
+	Texture tex;
 
 	void updateRules();
 	string you;
 	string youProp;
 	string is;
+	set<string> push;
 
-
-	Texture tex;
 
 	bool loadMap(const string &levelName);
 	void loadLevel();
-
-	float tileSize;
-
 	int *grid;
 	EntityMap map;
-
+	float tileSize;
 	glm::ivec2 mapSize;
 };
 #endif

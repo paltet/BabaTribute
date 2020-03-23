@@ -37,7 +37,7 @@ void Scene::init() {
 void Scene::update(int deltaTime) {
 	currentTime += deltaTime;
 
-	updateRules();
+	//updateRules();
 
 	updateMap(deltaTime);
 
@@ -50,13 +50,11 @@ void Scene::update(int deltaTime) {
 void Scene::updateMap(int deltaTime) {
 	for (int i = 0; i < map.size(); i++) {
 		for (int j = 0; j < map[0].size(); j++) {
-
-			if (map[i][j] != NULL) {
-				map[i][j]->update(deltaTime);
+			for (int k = 0; k < map[i][j].size(); k++) {
+				if (map[i][j][k] != NULL) map[i][j][k]->update(deltaTime);
 			}
 		}
 	}
-
 }
 
 void Scene::render() {
@@ -74,9 +72,8 @@ void Scene::render() {
 void Scene::renderMap() {
 	for (int i = 0; i < map.size(); i++) {
 		for (int j = 0; j < map[0].size(); j++) {
-
-			if (map[i][j] != NULL) {
-				map[i][j]->render();
+			for (int k = 0; k < map[i][j].size(); k++ ){
+				if (map[i][j][k] != NULL) map[i][j][k]->render();
 			}
 		}
 	}
@@ -148,7 +145,8 @@ bool Scene::loadMap(const string &levelFile) {
 
 void Scene::loadLevel() {
 
-	map = EntityMap(mapSize.y, vector<Entity*> (mapSize.x, nullptr));
+	
+	map = EntityMap(mapSize.y, vector<vector<Entity*>> (mapSize.x, vector<Entity*> (1, nullptr)));
 
 	int tile;
 
@@ -163,7 +161,7 @@ void Scene::loadLevel() {
 					Player* p = new Player();
 					//move = typeid(*w).name();
 					p->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j] = p;
+					map[i][j][0] = p;
 					break;
 				}
 			case 2:
@@ -171,28 +169,28 @@ void Scene::loadLevel() {
 					Wall* w = new Wall();
 					//move = typeid(*w).name();
 					w->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j] = w;
+					map[i][j][0] = w;
 					break;
 				}
 			case 6:
 				{
 					PlayerText* pt = new PlayerText();
 					pt->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j] = pt;
+					map[i][j][0] = pt;
 					break;
 				}
 			case 7:
 				{
 					WallText* wt = new WallText();
 					wt->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j] = wt;
+					map[i][j][0] = wt;
 					break;
 				}
 			case 11:
 				{
 					Is* ii = new Is();
 					ii->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j] = ii;
+					map[i][j][0] = ii;
 
 					is = typeid(*ii).name();
 
@@ -202,7 +200,7 @@ void Scene::loadLevel() {
 				{
 					You* y = new You();
 					y->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j] = y;
+					map[i][j][0] = y;
 					youProp = typeid(*y).name();
 					break;
 				}
@@ -210,10 +208,12 @@ void Scene::loadLevel() {
 				{
 					Win* win = new Win();
 					win->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j] = win;
+					map[i][j][0] = win;
 					break;
 				}
 			}
+
+			if (tile > 5 && map[i][j][0] != nullptr) push.insert(getId(map[i][j][0]));
 		}
 	}
 }
@@ -222,16 +222,20 @@ Input::KEY_STATE Scene::getButton(int key) {
 	return Game::instance().input.getSpecialKey(key);
 }
 
+string Scene::getId(Entity* e) {
+	return typeid(*e).name();
+}
+/*
 void Scene::updateRules() {
 
 
 	for (int i = 0; i < map.size(); i++) {
 		for (int j = 0; j < map[0].size(); j++) {
-			if (map[i][j] != nullptr){
+			if (map[i][j][0] != nullptr){
 
 				string name;
 
-				string id = typeid(*map[i][j]).name();
+				string id = typeid(*map[i][j][0]).name();
 				if (id == is) {
 					if (look(i, j, LEFT)) {
 						if (map[i - 1][j] != nullptr) {
@@ -266,7 +270,7 @@ void Scene::updateRules() {
 		}
 	}
 }
-
+/*
 bool Scene::look(int i, int j, direction d) {
 
 	if (map[i][j] == nullptr) return false;
@@ -320,3 +324,4 @@ void Scene::move(direction d) {
 	}
 	map = nMap;
 }
+*/

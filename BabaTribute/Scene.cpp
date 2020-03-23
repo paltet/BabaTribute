@@ -30,7 +30,7 @@ void Scene::init() {
 	tex.loadFromFile("images/baba.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 
-	load("levels/level1.txt");
+	load("levels/entities.txt");
 }
 
 void Scene::load(string levelFile) {
@@ -192,6 +192,27 @@ void Scene::loadLevel() {
 					map[i][j].push_back(w);
 					break;
 				}
+				case 3:
+				{
+					Flag* f = new Flag();
+					f->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(f);
+					break;
+				}
+				case 4:
+				{
+					Rock* r = new Rock();
+					r->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(r);
+					break;
+				}
+				case 5:
+				{
+					Fire* f = new Fire();
+					f->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(f);
+					break;
+				}
 				case 6:
 				{
 					PlayerText* pt = new PlayerText();
@@ -206,12 +227,41 @@ void Scene::loadLevel() {
 					map[i][j].push_back(wt);
 					break;
 				}
+				case 8:
+				{
+					FlagText* ft = new FlagText();
+					ft->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(ft);
+					break;
+				}
+				case 9:
+				{
+					RockText* rt = new RockText();
+					rt->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(rt);
+					break;
+				}
+				case 10:
+				{
+					FireText* ft = new FireText();
+					ft->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(ft);
+					break;
+				}
 				case 11:
 				{
 					Is* ii = new Is();
 					ii->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
 					map[i][j].push_back(ii);
 					is = typeid(*ii).name();
+					break;
+				}
+				case 12:
+				{
+					Eat* ea = new Eat();
+					ea->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(ea);
+					eat = typeid(*ea).name();
 					break;
 				}
 				case 13:
@@ -256,7 +306,7 @@ void Scene::loadLevel() {
 				}
 			}
 
-			if (tile > 5 && map[i][j][0] != nullptr) defaultPush.insert(getId(map[i][j][0]));
+			if (tile > 5 && map[i][j].size() > 0) defaultPush.insert(getId(map[i][j][0]));
 		}
 	}
 }

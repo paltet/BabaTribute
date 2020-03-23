@@ -10,7 +10,17 @@
 #include "Wall.h"
 #include "WallText.h"
 
+#include "Flag.h"
+#include "FlagText.h"
+
+#include "Rock.h"
+#include "RockText.h"
+
+#include "Fire.h"
+#include "FireText.h"
+
 #include "Is.h"
+#include "Eat.h"
 
 #include "You.h"
 #include "Win.h"

@@ -122,7 +122,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Defeat.cpp" />
+    <ClCompile Include="Eat.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Fire.cpp" />
+    <ClCompile Include="FireText.cpp" />
+    <ClCompile Include="Flag.cpp" />
+    <ClCompile Include="FlagText.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HowTo.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -132,6 +137,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerText.cpp" />
     <ClCompile Include="Push.cpp" />
+    <ClCompile Include="Rock.cpp" />
+    <ClCompile Include="RockText.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -152,7 +159,12 @@
     <ClInclude Include="AnimKeyframes.h" />
     <ClInclude Include="Defeat.h" />
     <ClInclude Include="Direction.h" />
+    <ClInclude Include="Eat.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Fire.h" />
+    <ClInclude Include="FireText.h" />
+    <ClInclude Include="Flag.h" />
+    <ClInclude Include="FlagText.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HowTo.h" />
     <ClInclude Include="Input.h" />
@@ -161,6 +173,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerText.h" />
     <ClInclude Include="Push.h" />
+    <ClInclude Include="Rock.h" />
+    <ClInclude Include="RockText.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgram.h" />

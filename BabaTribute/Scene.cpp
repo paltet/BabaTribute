@@ -30,8 +30,9 @@ void Scene::init() {
 	tex.loadFromFile("images/baba.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 
-	loadMap("levels/entities.txt");
+	loadMap("levels/level1.txt");
 	loadLevel();
+	updateRules();
 }
 
 void Scene::update(int deltaTime) {
@@ -41,17 +42,28 @@ void Scene::update(int deltaTime) {
 
 	updateMap(deltaTime);
 
-	/*
 	if (getButton(GLUT_KEY_DOWN) == Input::KEY_PRESSED) {
 		move(DOWN);
-	}*/
+	}
+	if (getButton(GLUT_KEY_RIGHT) == Input::KEY_PRESSED) {
+		move(RIGHT);
+	}
+	if (getButton(GLUT_KEY_LEFT) == Input::KEY_PRESSED) {
+		move(LEFT);
+	}
+	if (getButton(GLUT_KEY_UP) == Input::KEY_PRESSED) {
+		move(UP);
+	}
+	if (getButton(GLUT_KEY_F1) == Input::KEY_PRESSED) {
+		init();
+	}
 }
 
 void Scene::updateMap(int deltaTime) {
 	for (int i = 0; i < map.size(); i++) {
-		for (int j = 0; j < map[0].size(); j++) {
+		for (int j = 0; j < map[i].size(); j++) {
 			for (int k = 0; k < map[i][j].size(); k++) {
-				if (map[i][j][k] != NULL) map[i][j][k]->update(deltaTime);
+				map[i][j][k]->update(deltaTime);
 			}
 		}
 	}
@@ -71,9 +83,9 @@ void Scene::render() {
 
 void Scene::renderMap() {
 	for (int i = 0; i < map.size(); i++) {
-		for (int j = 0; j < map[0].size(); j++) {
+		for (int j = 0; j < map[i].size(); j++) {
 			for (int k = 0; k < map[i][j].size(); k++ ){
-				if (map[i][j][k] != NULL) map[i][j][k]->render();
+				map[i][j][k]->render();
 			}
 		}
 	}
@@ -146,7 +158,7 @@ bool Scene::loadMap(const string &levelFile) {
 void Scene::loadLevel() {
 
 	
-	map = EntityMap(mapSize.y, vector<vector<Entity*>> (mapSize.x, vector<Entity*> (1, nullptr)));
+	map = EntityMap(mapSize.y, vector<vector<Entity*>> (mapSize.x, vector<Entity*> (0)));
 
 	int tile;
 
@@ -156,64 +168,87 @@ void Scene::loadLevel() {
 			tile = grid[i * mapSize.x + j];
 
 			switch (tile) {
-			case 1:
+				case 1:
 				{
 					Player* p = new Player();
 					//move = typeid(*w).name();
 					p->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j][0] = p;
+					map[i][j].push_back(p);
 					break;
 				}
-			case 2:
+				case 2:
 				{
 					Wall* w = new Wall();
 					//move = typeid(*w).name();
 					w->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j][0] = w;
+					map[i][j].push_back(w);
 					break;
 				}
-			case 6:
+				case 6:
 				{
 					PlayerText* pt = new PlayerText();
 					pt->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j][0] = pt;
+					map[i][j].push_back(pt);
 					break;
 				}
-			case 7:
+				case 7:
 				{
 					WallText* wt = new WallText();
 					wt->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j][0] = wt;
+					map[i][j].push_back(wt);
 					break;
 				}
-			case 11:
+				case 11:
 				{
 					Is* ii = new Is();
 					ii->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j][0] = ii;
-
+					map[i][j].push_back(ii);
 					is = typeid(*ii).name();
-
 					break;
 				}
-			case 13:
+				case 13:
 				{
 					You* y = new You();
 					y->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j][0] = y;
-					youProp = typeid(*y).name();
+					map[i][j].push_back(y);
+					youProp = getId(y);
 					break;
 				}
-			case 14:
+				case 14:
 				{
 					Win* win = new Win();
 					win->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
-					map[i][j][0] = win;
+					map[i][j].push_back(win);
+					winProp = getId(win);
+					break;
+				}
+				case 15:
+				{
+					Defeat* defeat = new Defeat();
+					defeat->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(defeat);
+					defeatProp = getId(defeat);
+					break;
+				}
+				case 16:
+				{
+					Push* push = new Push();
+					push->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(push);
+					pushProp = getId(push);
+					break;
+				}
+				case 17:
+				{
+					Stop* stop = new Stop();
+					stop->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(stop);
+					stopProp = getId(stop);
 					break;
 				}
 			}
 
-			if (tile > 5 && map[i][j][0] != nullptr) push.insert(getId(map[i][j][0]));
+			if (tile > 5 && map[i][j][0] != nullptr) defaultPush.insert(getId(map[i][j][0]));
 		}
 	}
 }
@@ -225,55 +260,8 @@ Input::KEY_STATE Scene::getButton(int key) {
 string Scene::getId(Entity* e) {
 	return typeid(*e).name();
 }
-/*
-void Scene::updateRules() {
 
-
-	for (int i = 0; i < map.size(); i++) {
-		for (int j = 0; j < map[0].size(); j++) {
-			if (map[i][j][0] != nullptr){
-
-				string name;
-
-				string id = typeid(*map[i][j][0]).name();
-				if (id == is) {
-					if (look(i, j, LEFT)) {
-						if (map[i - 1][j] != nullptr) {
-							name = map[i - 1][j]->getIdReferred();
-
-							if (look(i, j, RIGHT)) {
-								if (map[i + 1][j] != nullptr) {
-
-									string prop = typeid(*map[i + 1][j]).name();
-									if (prop == youProp)	you = name;
-								}
-							}
-
-						}
-					}
-					if (look(i, j, UP)) {
-						if (map[i][j - 1] != nullptr) {
-							name = map[i][j - 1]->getIdReferred();
-
-							if (look(i, j, DOWN)) {
-								if (map[i][j + 1] != nullptr) {
-
-									string prop = typeid(*map[i][j + 1]).name();
-									if (prop == youProp)	you = name;
-								}
-							}
-
-						}
-					}
-				}
-			}
-		}
-	}
-}
-/*
 bool Scene::look(int i, int j, direction d) {
-
-	if (map[i][j] == nullptr) return false;
 
 	switch (d) {
 	case DOWN:
@@ -292,36 +280,129 @@ bool Scene::look(int i, int j, direction d) {
 	return true;
 }
 
-void Scene::move(direction d) {
+void Scene::updateRules() {
 
-	EntityMap nMap;
-	nMap = EntityMap(mapSize.y, vector<Entity*>(mapSize.x, nullptr));
+	string name, prop;
+	you.clear();
+	win.clear();
+	defeat.clear();
+	push.clear();
+	stop.clear();
 
 	for (int i = 0; i < map.size(); i++) {
-		for (int j = 0; j < map[0].size(); j++) {
-			if (map[i][j] != nullptr) {
-
-				string tile = typeid(*map[i][j]).name();
-				if (tile == you && look(i, j, d)) {
-					switch (d) {
-						case DOWN:
-							if (map[i][j+1] == nullptr) {
-								map[i][j]->move(DOWN, tileSize);
-								nMap[i][j + 1] = map[i][j];
-								map[i][j] = nullptr;
+		for (int j = 0; j < map[i].size(); j++) {
+			for (int k = 0; k < map[i][j].size(); k++) {
+				string id = getId(map[i][j][k]);
+				if (id == is) {																//If we find an is
+					if (look(i, j, LEFT)){													//Look left for a name
+						for (int l = 0; l < map[i - 1][j].size(); l++) {
+							name = map[i - 1][j][l]->getIdReferred();
+							if (name != "") {												//If we find a name
+								if (look(i, j, RIGHT)) {									//Look right for something
+									for (int m = 0; m < map[i + 1][j].size(); m++) {
+										prop = getId(map[i + 1][j][m]);						//If we find something we switch for each prop
+										if (prop == youProp) you.insert(name);
+										else if (prop == winProp) win.insert(name);
+										else if (prop == defeatProp) defeat.insert(name);
+										else if (prop == pushProp) push.insert(name);
+										else if (prop == stopProp) stop.insert(name);
+									}
+								}
 							}
-							else {
-								nMap[i][j] = map[i][j];
-							}
-							break;
+						}
 					}
-				}
-				else {
-					if (map[i][j] != nullptr) nMap[i][j] = map[i][j];
+					if (look(i, j, UP)) {													//Look left for a name
+						for (int l = 0; l < map[i][j - 1].size(); l++) {
+							name = map[i][j - 1][l]->getIdReferred();
+							if (name != "") {												//If we find a name
+								if (look(i, j, DOWN)) {										//Look right for something
+									for (int m = 0; m < map[i][j + 1].size(); m++) {
+										prop = getId(map[i][j + 1][m]);						//If we find something we switch for each prop
+										if (prop == youProp) you.insert(name);
+										else if (prop == winProp) win.insert(name);
+										else if (prop == defeatProp) defeat.insert(name);
+										else if (prop == pushProp) push.insert(name);
+										else if (prop == stopProp) stop.insert(name);
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
 	}
-	map = nMap;
+	push.insert(defaultPush.begin(), defaultPush.end());
 }
-*/
+
+void Scene::move(direction d) {
+	
+	//EntityMap nMap;
+	//nMap = EntityMap(mapSize.y, vector<vector<Entity*>>(mapSize.x, vector<Entity*>(1, nullptr)));
+	set<Entity*> moved;
+	moved.clear();
+
+
+	for (int i = 0; i < map.size(); i++) {
+		for (int j = 0; j < map[0].size(); j++) {
+			for (int k = 0; k < map[i][j].size(); k++) {
+				if (you.find(getId(map[i][j][k])) != you.end()) {
+					if (moved.find(map[i][j][k]) == moved.end()) moveTile(i, j, k, d, moved);
+				}
+			}
+		}
+	}
+	/*
+	for (int i = 0; i < map.size(); i++) {
+		for (int j = 0; j < map[0].size(); j++) {
+			for (int k = 0; k < map[i][j].size(); k++) {
+				if (map[i][j][k] != nullptr){
+					if (push.find(getId(map[i][j][k])) != push.end() && map[i][j][k] == nMap[i][j][k]) nMap[i][j][k] = map[i][j][k];	//si es un push que no s'ha mogut
+					else if (you.find(getId(map[i][j][k])) == you.end()) nMap[i][j][k] = map[i][j][k];									
+				}
+			}
+		}
+	}*/
+
+	updateRules();
+}
+
+bool Scene::moveTile(int i, int j, int k, direction d, set<Entity*> &moved) { 
+	bool move = true;
+	int newI = i, newJ = j;
+
+	switch (d) {
+	case DOWN:
+		newJ++;
+		break;
+	case RIGHT:
+		newI++;
+		break;
+	case LEFT:
+		newI--;
+		break;
+	case UP:
+		newJ--;
+		break;
+	}
+
+
+	if (!look(i, j, d)) move = false;
+	else {
+		if (map[newI][newJ].size() == 0) move = true;
+		else {
+			for (int nk = 0; nk < map[newI][newJ].size(); nk++) {
+				if (push.find(getId(map[newI][newJ][nk])) != push.end()) {
+					move = moveTile(newI, newJ, nk, d, moved);
+				}
+			}
+		}
+	}
+	if (move) {
+		moved.insert(map[i][j][k]);
+		map[i][j][k]->move(d, tileSize);
+		map[newI][newJ].push_back(map[i][j][k]);
+		map[i][j].erase(map[i][j].begin()+k);
+	}
+	return move;
+}

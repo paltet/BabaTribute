@@ -1,5 +1,5 @@
 #include "WallText.h"
-
+#include "Wall.h"
 
 void WallText::setAnimations() {
 
@@ -12,4 +12,9 @@ void WallText::setAnimations() {
 	sprite->addKeyframe(0, glm::vec2(27.f / 32.f, 35.f / 66.f));
 
 	sprite->changeAnimation(0);
+}
+
+string WallText::getIdReferred() {
+	Wall *w = new Wall();
+	return (typeid(*w).name());
 }

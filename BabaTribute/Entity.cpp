@@ -27,9 +27,25 @@ void Entity::move(direction d, float length) {
 		case DOWN:
 			{
 				position = glm::vec2(position.x, position.y + length);
-				sprite->setPosition(position);
+				break;
+			}
+		case RIGHT:
+			{
+				position = glm::vec2(position.x + length, position.y);
+				break;
+			}
+		case LEFT:
+			{
+				position = glm::vec2(position.x - length, position.y);
+				break;
+			}
+		case UP:
+			{
+				position = glm::vec2(position.x, position.y - length);
+				break;
 			}
 	}
+	sprite->setPosition(position);
 }
 
 void Entity::setColor() {
@@ -37,5 +53,5 @@ void Entity::setColor() {
 }
 
 string Entity::getIdReferred() {
-	return " ";
+	return "";
 }

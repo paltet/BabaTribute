@@ -14,6 +14,9 @@
 
 #include "You.h"
 #include "Win.h"
+#include "Defeat.h"
+#include "Push.h"
+#include "Stop.h"
 
 #include "Input.h"
 #include "Texture.h"
@@ -43,6 +46,7 @@ private:
 
 	bool look(int i, int j, direction d);
 	void move(direction d);
+	bool moveTile(int i, int j, int k, direction d, set<Entity*> &moved);
 	string getId(Entity* p);
 
 private:
@@ -53,10 +57,21 @@ private:
 	Texture tex;
 
 	void updateRules();
-	string you;
 	string youProp;
+	string pushProp;
+	string winProp;
+	string defeatProp;
+	string stopProp;
+
 	string is;
+	string eat;
+
 	set<string> push;
+	set<string> defaultPush;
+	set<string> you;
+	set<string> win;
+	set<string> defeat;
+	set<string> stop;
 
 
 	bool loadMap(const string &levelName);

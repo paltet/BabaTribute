@@ -8,6 +8,6 @@ class WallText : public Entity
 public:
 
 	void setAnimations();
-
+	string getIdReferred();
 };
 #endif

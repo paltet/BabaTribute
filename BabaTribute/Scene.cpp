@@ -30,7 +30,12 @@ void Scene::init() {
 	tex.loadFromFile("images/baba.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 
-	loadMap("levels/level1.txt");
+	load("levels/level1.txt");
+}
+
+void Scene::load(string levelFile) {
+	level = levelFile;
+	loadMap(levelFile);
 	loadLevel();
 	updateRules();
 }
@@ -55,7 +60,10 @@ void Scene::update(int deltaTime) {
 		move(UP);
 	}
 	if (getButton(GLUT_KEY_F1) == Input::KEY_PRESSED) {
-		init();
+		load(level);
+	}
+	if (getButton(GLUT_KEY_F2) == Input::KEY_PRESSED) {
+		int x = 0;
 	}
 }
 
@@ -352,17 +360,6 @@ void Scene::move(direction d) {
 			}
 		}
 	}
-	/*
-	for (int i = 0; i < map.size(); i++) {
-		for (int j = 0; j < map[0].size(); j++) {
-			for (int k = 0; k < map[i][j].size(); k++) {
-				if (map[i][j][k] != nullptr){
-					if (push.find(getId(map[i][j][k])) != push.end() && map[i][j][k] == nMap[i][j][k]) nMap[i][j][k] = map[i][j][k];	//si es un push que no s'ha mogut
-					else if (you.find(getId(map[i][j][k])) == you.end()) nMap[i][j][k] = map[i][j][k];									
-				}
-			}
-		}
-	}*/
 
 	updateRules();
 }
@@ -392,7 +389,11 @@ bool Scene::moveTile(int i, int j, int k, direction d, set<Entity*> &moved) {
 		if (map[newI][newJ].size() == 0) move = true;
 		else {
 			for (int nk = 0; nk < map[newI][newJ].size(); nk++) {
-				if (push.find(getId(map[newI][newJ][nk])) != push.end()) {
+				string nId = getId(map[newI][newJ][nk]);
+				
+				if (stop.find(nId) != stop.end()) {
+					move = false;
+				} else if (push.find(nId) != push.end() || you.find(nId) != you.end()){
 					move = moveTile(newI, newJ, nk, d, moved);
 				}
 			}

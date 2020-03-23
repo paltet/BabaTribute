@@ -35,6 +35,7 @@ public:
 	void init();
 	void update(int deltaTime);
 	void render();
+	void load(string levelFile);
 
 	Input::KEY_STATE getButton(int key);
 
@@ -55,6 +56,7 @@ private:
 	ShaderProgram texProgram;
 	glm::mat4 projection;
 	Texture tex;
+	string level;
 
 	void updateRules();
 	string youProp;

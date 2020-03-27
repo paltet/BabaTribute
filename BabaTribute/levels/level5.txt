@@ -1,0 +1,17 @@
+LEVEL
+15 15
+bbbbbbbbbbbbbbb
+baaaaa        b
+b             b
+b             b
+b             b
+b             b
+b             b
+b             b
+b             b
+b             b
+b             b
+b             b
+bbbbbbbbbbbbbbb
+bfkmbgkqbbbbbbb
+bbbbbbbbbbbbbbb

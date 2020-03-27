@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "ShaderProgram.h"
+#include "Text.h"
 
 #include "Player.h"
 #include "PlayerText.h"
@@ -42,23 +43,29 @@ public:
 	Scene();
 	~Scene();
 
-	void init();
-	void update(int deltaTime);
+	void init(string levelFile);
+	bool update(int deltaTime);
 	void render();
 	void load(string levelFile);
 
 	Input::KEY_STATE getButton(int key);
+
+	void loadText(string line);
 
 private:
 
 	void initShaders();
 	void updateMap(int deltaTime);
 	void renderMap();
+	bool checkWin();
+	bool checkDefeat();
 
 	bool look(int i, int j, direction d);
 	void move(direction d);
 	bool moveTile(int i, int j, int k, direction d, set<Entity*> &moved);
 	string getId(Entity* p);
+
+	void sound(string filename);
 
 private:
 
@@ -69,6 +76,7 @@ private:
 	string level;
 
 	void updateRules();
+
 	string youProp;
 	string pushProp;
 	string winProp;
@@ -84,6 +92,7 @@ private:
 	set<string> win;
 	set<string> defeat;
 	set<string> stop;
+	set<pair<string, string>> eaters;
 
 
 	bool loadMap(const string &levelName);
@@ -92,5 +101,8 @@ private:
 	EntityMap map;
 	float tileSize;
 	glm::ivec2 mapSize;
+	Text text;
+	float textTimer;
+	string textLine;
 };
 #endif

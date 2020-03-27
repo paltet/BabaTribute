@@ -1,20 +1,26 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "Game.h"
+using namespace irrklang;
 
 void Game::init() {
 
 	state = STATE_MENU;
 	bPlay = true;
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	
+	engine = createIrrKlangDevice();
+	if (!engine) exit(0);
+
 	menu.init();
 	input.init();
-
+	sound("level");
 }
 
 bool Game::update(int deltaTime) {
 
 	input.update(keys, specialKeys);
+
 
 	switch (state) {
 
@@ -23,13 +29,24 @@ bool Game::update(int deltaTime) {
 		switch (menu.state) {
 		case HOWTO:
 			if (input.getKey(13) == input.KEY_PRESSED) {
+				sound("select");
 				howto.init();
 				state = STATE_HOWTO;
 			}
 			break;
+		case 2:
+			if (input.getKey(13) == input.KEY_PRESSED) {
+				sound("select");
+				credits.init();
+				state = STATE_CREDITS;
+			}
+			break;
 		case PLAY:
 			if (input.getKey(13) == input.KEY_PRESSED) {
-				scene.init();
+				currentlevel = 0;
+				sound("level");
+				scene.init(levels[currentlevel]);
+				scene.loadText("LEVEL " + to_string(currentlevel+1));
 				state = STATE_PLAYING;
 			}
 			break;
@@ -37,12 +54,31 @@ bool Game::update(int deltaTime) {
 		break;
 
 	case STATE_PLAYING:
-		scene.update(deltaTime);
+		if (scene.update(deltaTime)) {
+			currentlevel++;
+			if (currentlevel < levels.size()) {
+				scene.load(levels[currentlevel]);
+				scene.loadText("LEVEL " + to_string(currentlevel+1));
+			}
+			else {
+				menu.init();
+				state = STATE_MENU;
+			}
+		}
 		break;
 
 	case STATE_HOWTO:
 		howto.update(deltaTime);
 		if (input.getKey(13) == input.KEY_PRESSED) {
+			sound("select");
+			state = STATE_MENU;
+		}
+		break;
+
+	case STATE_CREDITS:
+		credits.update(deltaTime);
+		if (input.getKey(13) == input.KEY_PRESSED) {
+			sound("select");
 			state = STATE_MENU;
 		}
 		break;
@@ -63,6 +99,9 @@ void Game::render() {
 		break;
 	case STATE_PLAYING:
 		scene.render();
+		break;
+	case STATE_CREDITS:
+		credits.render();
 		break;
 	}
 }
@@ -111,3 +150,7 @@ bool Game::getSpecialKey(int key) const
 	return specialKeys[key];
 }
 
+void Game::sound(string filename) {
+	filename = "sound/" + filename + ".mp3";
+	if (!engine->isCurrentlyPlaying(filename.c_str())) engine->play2D(filename.c_str());
+}

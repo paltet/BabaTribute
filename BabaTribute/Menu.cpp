@@ -5,6 +5,9 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
+using namespace std;
+
+
 Menu::Menu()
 {
 	pointer = nullptr;
@@ -50,12 +53,20 @@ void Menu::update(int deltaTime) {
 
 	if (Game::instance().input.getSpecialKey(GLUT_KEY_UP) == Game::instance().input.KEY_PRESSED)
 	{
-		if (state != PLAY) state--;
+		if (state != PLAY) {
+			Game::instance().sound("cursor");
+			state--;
+		}
+		else sound("stop");
 		currentTime = 0;
 	}
 	else if (Game::instance().input.getSpecialKey(GLUT_KEY_DOWN) == Game::instance().input.KEY_PRESSED)
 	{
-		if (state != EXIT) state++;
+		if (state != EXIT) {
+			sound("cursor");
+			state++;
+		}
+		else sound("stop");
 		currentTime = 0;
 	}
 	if (Game::instance().input.getKey(13) == Game::instance().input.KEY_PRESSED && state == EXIT) {
@@ -111,3 +122,6 @@ void Menu::initShaders()
 		fShader.free();
 }
 
+void Menu::sound(string filename) {
+	Game::instance().sound(filename);
+}

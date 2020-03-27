@@ -23,14 +23,21 @@ Scene::~Scene()
 	//if (map != nullptr) map = nullptr;
 }
 
-void Scene::init() {
+void Scene::init(string levelFile) {
 	tileSize = CAMERA_WIDTH / 15.f;
 	currentTime = 0.f;
 	initShaders();
 	tex.loadFromFile("images/baba.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
+	
+	if (!text.init("fonts/INVASION2000.ttf"))
+		//if(!text.init("fonts/OpenSans-Bold.ttf"))
+		//if(!text.init("fonts/DroidSerif.ttf"))
+		cout << "Could not load font!!!" << endl;
+	textTimer = 0.f;
+	textLine = "";
 
-	load("levels/entities.txt");
+	load(levelFile);
 }
 
 void Scene::load(string levelFile) {
@@ -40,10 +47,9 @@ void Scene::load(string levelFile) {
 	updateRules();
 }
 
-void Scene::update(int deltaTime) {
+bool Scene::update(int deltaTime) {
 	currentTime += deltaTime;
-
-	//updateRules();
+	textTimer += deltaTime;
 
 	updateMap(deltaTime);
 
@@ -65,6 +71,12 @@ void Scene::update(int deltaTime) {
 	if (getButton(GLUT_KEY_F2) == Input::KEY_PRESSED) {
 		int x = 0;
 	}
+
+	if (checkDefeat()) {
+		load(level);
+	}
+
+	return checkWin();
 }
 
 void Scene::updateMap(int deltaTime) {
@@ -87,6 +99,7 @@ void Scene::render() {
 	modelview = glm::mat4(1.f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	renderMap();
+	if (textTimer <= 1000.f) text.render(textLine, glm::vec2(CAMERA_WIDTH/2 - 105, CAMERA_HEIGHT/2 - 25), 32, glm::vec4(1.f, 0.f, 0.f, 1.f));
 }
 
 void Scene::renderMap() {
@@ -340,12 +353,14 @@ bool Scene::look(int i, int j, direction d) {
 
 void Scene::updateRules() {
 
-	string name, prop;
+	string name, prop, name2;
 	you.clear();
 	win.clear();
 	defeat.clear();
 	push.clear();
 	stop.clear();
+
+	eaters.clear();
 
 	for (int i = 0; i < map.size(); i++) {
 		for (int j = 0; j < map[i].size(); j++) {
@@ -381,6 +396,38 @@ void Scene::updateRules() {
 										else if (prop == defeatProp) defeat.insert(name);
 										else if (prop == pushProp) push.insert(name);
 										else if (prop == stopProp) stop.insert(name);
+									}
+								}
+							}
+						}
+					}
+				}
+				else if (id == eat) {
+					if (look(i, j, LEFT)) {													//Look left for a name
+						for (int l = 0; l < map[i - 1][j].size(); l++) {
+							name = map[i - 1][j][l]->getIdReferred();
+							if (name != "") {												//If we find a name
+								if (look(i, j, RIGHT)) {									//Look right for something
+									for (int m = 0; m < map[i + 1][j].size(); m++) {
+										name2 = map[i + 1][j][m]->getIdReferred();
+										if (name2 != "") {
+											eaters.insert(make_pair(name, name2));
+										}
+									}
+								}
+							}
+						}
+					}
+					if (look(i, j, UP)) {													//Look left for a name
+						for (int l = 0; l < map[i][j - 1].size(); l++) {
+							name = map[i][j - 1][l]->getIdReferred();
+							if (name != "") {												//If we find a name
+								if (look(i, j, DOWN)) {									//Look right for something
+									for (int m = 0; m < map[i][j + 1].size(); m++) {
+										name2 = map[i][j + 1][m]->getIdReferred();
+										if (name2 != "") {
+											eaters.insert(make_pair(name, name2));
+										}
 									}
 								}
 							}
@@ -440,9 +487,21 @@ bool Scene::moveTile(int i, int j, int k, direction d, set<Entity*> &moved) {
 		else {
 			for (int nk = 0; nk < map[newI][newJ].size(); nk++) {
 				string nId = getId(map[newI][newJ][nk]);
-				
-				if (stop.find(nId) != stop.end()) {
+
+				string id = getId(map[i][j][k]);
+				if (eaters.find(make_pair(id, nId)) != eaters.end()) {
+					sound("eat");
+					map[newI][newJ].erase(map[newI][newJ].begin() + nk);
+					move = true;
+				}
+				else if (eaters.find(make_pair(nId, id)) != eaters.end()) {
+					map[i][j].erase(map[i][j].begin() + k);
+					return true;
+				}
+
+				else if (stop.find(nId) != stop.end()) {
 					move = false;
+					sound("stop");
 				} else if (push.find(nId) != push.end() || you.find(nId) != you.end()){
 					move = moveTile(newI, newJ, nk, d, moved);
 				}
@@ -450,10 +509,64 @@ bool Scene::moveTile(int i, int j, int k, direction d, set<Entity*> &moved) {
 		}
 	}
 	if (move) {
+		sound("move");
 		moved.insert(map[i][j][k]);
 		map[i][j][k]->move(d, tileSize);
 		map[newI][newJ].push_back(map[i][j][k]);
 		map[i][j].erase(map[i][j].begin()+k);
 	}
 	return move;
+}
+
+bool Scene::checkDefeat() {
+
+	for (int i = 0; i < map.size(); i++) {
+		for (int j = 0; j < map[i].size(); j++) {
+			for (int k = 0; k < map[i][j].size(); k++) {
+				string id = getId(map[i][j][k]);
+				if (you.find(id) != you.end()) {
+					for (int l = 0; l < map[i][j].size(); l++) {
+						string id2 = getId(map[i][j][l]);
+						if (defeat.find(id2) != defeat.end()) {
+							sound("defeat");
+							return true;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+bool Scene::checkWin() {
+
+	for (int i = 0; i < map.size(); i++) {
+		for (int j = 0; j < map[i].size(); j++) {
+			for (int k = 0; k < map[i][j].size(); k++) {
+				string id = getId(map[i][j][k]);
+				if (you.find(id) != you.end()) {
+					for (int l = 0; l < map[i][j].size(); l++) {
+						string id2 = getId(map[i][j][l]);
+						if (win.find(id2) != win.end()) {
+							sound("level");
+							return true;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+void Scene::sound(string filename) {
+	Game::instance().sound(filename);
+}
+
+void Scene::loadText(string line) {
+	textTimer = 0;
+	textLine = line;
 }

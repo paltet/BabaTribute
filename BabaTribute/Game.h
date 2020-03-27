@@ -6,11 +6,15 @@
 #include "HowTo.h"
 #include "Scene.h"
 #include "Input.h"
+#include "Credits.h"
+#include <irrKlang.h>
 
 #define CAMERA_WIDTH 480
 #define CAMERA_HEIGHT 480
 
 #define MARGIN 200
+
+using namespace irrklang;
 
 class Game
 {
@@ -38,7 +42,10 @@ public:
 	bool getKey(int key) const;
 	bool getSpecialKey(int key) const;
 
+	void sound(string filename);
+
 	Input input;
+	ISoundEngine *engine;
 
 private:
 	bool bPlay;
@@ -54,12 +61,14 @@ private:
 	Menu menu;
 	HowTo howto;
 	Scene scene;
-	//Credits credits;
+	Credits credits;
 	//Instructions instructions
 
 	bool keys[256], specialKeys[256]; // Store key states so that 
 									  // we can have access at any time
 
+	vector<string> levels = { "levels/level1.txt", "levels/level2.txt", "levels/level3.txt", "levels/level4.txt", "levels/level5.txt" };
+	int currentlevel;
 };
 
 #endif

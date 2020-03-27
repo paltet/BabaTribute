@@ -1,17 +1,17 @@
 LEVEL
 15 15
 bbbbbbbbbbbbbbb
+ba        bflib
+b         bbbbb
 b             b
+b        dd   b
+b        ddd  b
+b         dd  b
 b             b
+b  c       e  b
 b             b
-b             b
-b       a     b
-b    g  a     b
-b    k        b
-b    q        b
-b             b
-b             b
-b   fkm       b
-b             b
-b             b
+bbbbbbbbbbbbbbb
+b jko bbb hkn b
+bbbbbbbbbbbbbbb
+b fkm bbb gkq b
 bbbbbbbbbbbbbbb

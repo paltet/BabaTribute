@@ -22,6 +22,7 @@ public:
 
 private:
 	void initShaders();
+	void sound(string filename);
 
 private:
 	float currentTime;
@@ -30,7 +31,7 @@ private:
 	Sprite *pointer;
 	Texture tex;
 
-	enum {PLAY, HOWTO, ABOUT, EXIT};
+	enum {PLAY, HOWTO, CREDITS, EXIT};
 
 	ShaderProgram texProgram;
 	glm::mat4 projection;

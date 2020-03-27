@@ -10,11 +10,12 @@
 class Entity
 {
 public:
+	
 	void init(glm::vec2 pos, Texture &tex, ShaderProgram &program);
-	void update(int deltaTime);
+	virtual void update(int deltaTime);
 	void render();
 
-	void move(direction d, float length);
+	virtual void move(direction d, float length);
 	
 	Sprite* sprite;
 	virtual void setAnimations() = 0;
@@ -22,11 +23,11 @@ public:
 	glm::vec3 color;
 
 	virtual string getIdReferred();
+	glm::vec2 position;
 
 private:
 
 	ShaderProgram sProgram;
-	glm::vec2 position;
 };
 
 #endif

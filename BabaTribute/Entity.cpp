@@ -10,7 +10,7 @@ void Entity::init(glm::vec2 pos, Texture &tex, ShaderProgram &program) {
 	setColor();
 }
 
-void Entity::update(int deltaTime) {
+void Entity::update(int deltaTime, int moves) {
 	sprite->update(deltaTime);
 }
 
@@ -54,4 +54,8 @@ void Entity::setColor() {
 
 string Entity::getIdReferred() {
 	return "";
+}
+
+int Entity::eatMoves() {
+	return 0;
 }

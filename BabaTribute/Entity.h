@@ -12,7 +12,7 @@ class Entity
 public:
 	
 	void init(glm::vec2 pos, Texture &tex, ShaderProgram &program);
-	virtual void update(int deltaTime);
+	virtual void update(int deltaTime, int moves);
 	void render();
 
 	virtual void move(direction d, float length);
@@ -24,6 +24,8 @@ public:
 
 	virtual string getIdReferred();
 	glm::vec2 position;
+
+	virtual int eatMoves();
 
 private:
 

@@ -114,6 +114,15 @@
     <ClCompile Include="Credits.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Number.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FruitText.cpp">
+      <Filter>Source Files\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Fruit.cpp">
+      <Filter>Source Files\Tiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -214,6 +223,15 @@
     </ClInclude>
     <ClInclude Include="Credits.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Number.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Fruit.h">
+      <Filter>Header Files\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="FruitText.h">
+      <Filter>Header Files\Tiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

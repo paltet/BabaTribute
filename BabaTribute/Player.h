@@ -9,7 +9,7 @@ public:
 
 	void setAnimations();
 	void move(direction d, float length);
-	void update(int deltaTime);
+	void update(int deltaTime, int moves);
 
 	float animTime = -1.f, currentTime = 0.f;
 

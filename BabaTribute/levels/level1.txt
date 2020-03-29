@@ -1,10 +1,10 @@
 LEVEL
-15 15
+15 15 20
 bbbbbbbbbbbbbbb
 ba        bflib
-b         bbbbb
-b             b
-b        dd   b
+b         blsrb
+b   tt    bubbb
+b   tt    bbbbb
 b        ddd  b
 b         dd  b
 b             b
@@ -13,5 +13,5 @@ b             b
 bbbbbbbbbbbbbbb
 b jko bbb hkn b
 bbbbbbbbbbbbbbb
-b fkm bbb gkq b
+b  bbbbfkmbgkpb
 bbbbbbbbbbbbbbb

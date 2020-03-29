@@ -20,6 +20,9 @@
 #include "Fire.h"
 #include "FireText.h"
 
+#include "Fruit.h"
+#include "FruitText.h"
+
 #include "Is.h"
 #include "Eat.h"
 
@@ -29,6 +32,7 @@
 #include "Push.h"
 #include "Stop.h"
 
+#include "Number.h"
 #include "Input.h"
 #include "Texture.h"
 
@@ -61,7 +65,7 @@ private:
 	bool checkDefeat();
 
 	bool look(int i, int j, direction d);
-	void move(direction d);
+	bool move(direction d);
 	bool moveTile(int i, int j, int k, direction d, set<Entity*> &moved);
 	string getId(Entity* p);
 
@@ -104,5 +108,10 @@ private:
 	Text text;
 	float textTimer;
 	string textLine;
+
+	int nMoves;
+	bool hasPushed;
+	bool hasStopped;
+	bool hasEaten;
 };
 #endif

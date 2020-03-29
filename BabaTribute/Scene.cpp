@@ -27,7 +27,7 @@ void Scene::init(string levelFile) {
 	tileSize = CAMERA_WIDTH / 15.f;
 	currentTime = 0.f;
 	initShaders();
-	tex.loadFromFile("images/baba.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	tex.loadFromFile("images/baba_blank.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 	
 	if (!text.init("fonts/INVASION2000.ttf"))
@@ -54,16 +54,32 @@ bool Scene::update(int deltaTime) {
 	updateMap(deltaTime);
 
 	if (getButton(GLUT_KEY_DOWN) == Input::KEY_PRESSED) {
-		move(DOWN);
+		if (nMoves > 0) {
+			move(DOWN);
+			nMoves--;
+		}
+		else sound("defeat");
 	}
 	if (getButton(GLUT_KEY_RIGHT) == Input::KEY_PRESSED) {
-		move(RIGHT);
+		if (nMoves > 0) {
+			move(RIGHT);
+			nMoves--;
+		}
+		else sound("defeat");
 	}
 	if (getButton(GLUT_KEY_LEFT) == Input::KEY_PRESSED) {
-		move(LEFT);
+		if (nMoves > 0) {
+			move(LEFT);
+			nMoves--;
+		}
+		else sound("defeat");
 	}
 	if (getButton(GLUT_KEY_UP) == Input::KEY_PRESSED) {
-		move(UP);
+		if (nMoves > 0) {
+			move(UP);
+			nMoves--;
+		}
+		else sound("defeat");
 	}
 	if (getButton(GLUT_KEY_F1) == Input::KEY_PRESSED) {
 		load(level);
@@ -83,7 +99,7 @@ void Scene::updateMap(int deltaTime) {
 	for (int i = 0; i < map.size(); i++) {
 		for (int j = 0; j < map[i].size(); j++) {
 			for (int k = 0; k < map[i][j].size(); k++) {
-				map[i][j][k]->update(deltaTime);
+				map[i][j][k]->update(deltaTime, nMoves);
 			}
 		}
 	}
@@ -100,6 +116,7 @@ void Scene::render() {
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	renderMap();
 	if (textTimer <= 1000.f) text.render(textLine, glm::vec2(CAMERA_WIDTH/2 - 105, CAMERA_HEIGHT/2 - 25), 32, glm::vec4(1.f, 0.f, 0.f, 1.f));
+	text.render(to_string(nMoves), glm::vec2(tileSize + 11, CAMERA_HEIGHT - tileSize - 11), 32, glm::vec4(0.f, 0.f, 1.f, 1.f));
 }
 
 void Scene::renderMap() {
@@ -156,7 +173,7 @@ bool Scene::loadMap(const string &levelFile) {
 
 	getline(fin, line);
 	sstream.str(line);
-	sstream >> mapSize.x >> mapSize.y;
+	sstream >> mapSize.x >> mapSize.y >> nMoves;
 
 	grid = new int[mapSize.x * mapSize.y];
 
@@ -317,9 +334,37 @@ void Scene::loadLevel() {
 					stopProp = getId(stop);
 					break;
 				}
+				case 18:
+				{
+					Unities* u = new Unities();
+					u->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(u);
+					break;
+				}
+				case 19:
+				{
+					Tens* u = new Tens();
+					u->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(u);
+					break;
+				}
+				case 20:
+				{
+					Fruit* u = new Fruit();
+					u->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(u);
+					break;
+				}
+				case 21:
+				{
+					FruitText* u = new FruitText();
+					u->init(glm::vec2(i*tileSize, j*tileSize), tex, texProgram);
+					map[i][j].push_back(u);
+					break;
+				}
 			}
 
-			if (tile > 5 && map[i][j].size() > 0) defaultPush.insert(getId(map[i][j][0]));
+			if (tile > 5 && tile != 20 && map[i][j].size() > 0) defaultPush.insert(getId(map[i][j][0]));
 		}
 	}
 }
@@ -440,25 +485,37 @@ void Scene::updateRules() {
 	push.insert(defaultPush.begin(), defaultPush.end());
 }
 
-void Scene::move(direction d) {
+bool Scene::move(direction d) {
 	
 	//EntityMap nMap;
 	//nMap = EntityMap(mapSize.y, vector<vector<Entity*>>(mapSize.x, vector<Entity*>(1, nullptr)));
 	set<Entity*> moved;
 	moved.clear();
+	bool ret = false;
+	hasPushed = false;
+	hasEaten = false;
+	hasStopped = false;
 
 
 	for (int i = 0; i < map.size(); i++) {
 		for (int j = 0; j < map[0].size(); j++) {
 			for (int k = 0; k < map[i][j].size(); k++) {
 				if (you.find(getId(map[i][j][k])) != you.end()) {
-					if (moved.find(map[i][j][k]) == moved.end()) moveTile(i, j, k, d, moved);
+					if (moved.find(map[i][j][k]) == moved.end()) {
+						if (moveTile(i, j, k, d, moved)) ret = true;
+					}
 				}
 			}
 		}
 	}
 
 	updateRules();
+	if (hasStopped) sound("stop");
+	else if (hasPushed) sound("push");
+	else if (hasEaten) sound("eat");
+	else if (ret) sound("move");
+	else sound("stop");
+	return ret;
 }
 
 bool Scene::moveTile(int i, int j, int k, direction d, set<Entity*> &moved) { 
@@ -490,7 +547,8 @@ bool Scene::moveTile(int i, int j, int k, direction d, set<Entity*> &moved) {
 
 				string id = getId(map[i][j][k]);
 				if (eaters.find(make_pair(id, nId)) != eaters.end()) {
-					sound("eat");
+					hasEaten = true;
+					nMoves += map[newI][newJ][nk]->eatMoves();
 					map[newI][newJ].erase(map[newI][newJ].begin() + nk);
 					move = true;
 				}
@@ -501,15 +559,15 @@ bool Scene::moveTile(int i, int j, int k, direction d, set<Entity*> &moved) {
 
 				else if (stop.find(nId) != stop.end()) {
 					move = false;
-					sound("stop");
+					hasStopped = true;
 				} else if (push.find(nId) != push.end() || you.find(nId) != you.end()){
 					move = moveTile(newI, newJ, nk, d, moved);
+					if (move) hasPushed = true;
 				}
 			}
 		}
 	}
 	if (move) {
-		sound("move");
 		moved.insert(map[i][j][k]);
 		map[i][j][k]->move(d, tileSize);
 		map[newI][newJ].push_back(map[i][j][k]);

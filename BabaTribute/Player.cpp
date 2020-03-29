@@ -88,7 +88,7 @@ void Player::move(direction d, float length) {
 	
 }
 
-void Player::update(int deltaTime) {
+void Player::update(int deltaTime, int moves) {
 	currentTime += deltaTime;
 	sprite->update(deltaTime);
 	if (animTime > 0 && currentTime > animTime + 300.f){

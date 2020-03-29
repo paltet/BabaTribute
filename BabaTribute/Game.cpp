@@ -152,5 +152,5 @@ bool Game::getSpecialKey(int key) const
 
 void Game::sound(string filename) {
 	filename = "sound/" + filename + ".mp3";
-	if (!engine->isCurrentlyPlaying(filename.c_str())) engine->play2D(filename.c_str());
+	engine->play2D(filename.c_str());
 }

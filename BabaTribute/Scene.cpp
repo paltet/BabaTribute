@@ -53,39 +53,36 @@ bool Scene::update(int deltaTime) {
 
 	updateMap(deltaTime);
 
-	if (getButton(GLUT_KEY_DOWN) == Input::KEY_PRESSED) {
+	if (getSpecialButton(GLUT_KEY_DOWN) == Input::KEY_PRESSED) {
 		if (nMoves > 0) {
 			move(DOWN);
 			nMoves--;
 		}
 		else sound("defeat");
 	}
-	if (getButton(GLUT_KEY_RIGHT) == Input::KEY_PRESSED) {
+	if (getSpecialButton(GLUT_KEY_RIGHT) == Input::KEY_PRESSED) {
 		if (nMoves > 0) {
 			move(RIGHT);
 			nMoves--;
 		}
 		else sound("defeat");
 	}
-	if (getButton(GLUT_KEY_LEFT) == Input::KEY_PRESSED) {
+	if (getSpecialButton(GLUT_KEY_LEFT) == Input::KEY_PRESSED) {
 		if (nMoves > 0) {
 			move(LEFT);
 			nMoves--;
 		}
 		else sound("defeat");
 	}
-	if (getButton(GLUT_KEY_UP) == Input::KEY_PRESSED) {
+	if (getSpecialButton(GLUT_KEY_UP) == Input::KEY_PRESSED) {
 		if (nMoves > 0) {
 			move(UP);
 			nMoves--;
 		}
 		else sound("defeat");
 	}
-	if (getButton(GLUT_KEY_F1) == Input::KEY_PRESSED) {
+	if (getButton('r') == Input::KEY_PRESSED) {
 		load(level);
-	}
-	if (getButton(GLUT_KEY_F2) == Input::KEY_PRESSED) {
-		int x = 0;
 	}
 
 	if (checkDefeat()) {
@@ -116,7 +113,6 @@ void Scene::render() {
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	renderMap();
 	if (textTimer <= 1000.f) text.render(textLine, glm::vec2(CAMERA_WIDTH/2 - 105, CAMERA_HEIGHT/2 - 25), 32, glm::vec4(1.f, 0.f, 0.f, 1.f));
-	text.render(to_string(nMoves), glm::vec2(tileSize + 11, CAMERA_HEIGHT - tileSize - 11), 32, glm::vec4(0.f, 0.f, 1.f, 1.f));
 }
 
 void Scene::renderMap() {
@@ -369,8 +365,12 @@ void Scene::loadLevel() {
 	}
 }
 
-Input::KEY_STATE Scene::getButton(int key) {
+Input::KEY_STATE Scene::getSpecialButton(int key) {
 	return Game::instance().input.getSpecialKey(key);
+}
+
+Input::KEY_STATE Scene::getButton(int key) {
+	return Game::instance().input.getKey(key);
 }
 
 string Scene::getId(Entity* e) {

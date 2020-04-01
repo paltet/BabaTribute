@@ -18,3 +18,7 @@ string RockText::getIdReferred() {
 	Rock *r = new Rock();
 	return (typeid(*r).name());
 }
+
+void RockText::setColor() {
+	color = glm::vec3(1 / 2.f, 1 / 2.f, 0.f);
+}

@@ -17,3 +17,7 @@ void Fruit::setAnimations() {
 int Fruit::eatMoves() {
 	return 11;
 }
+
+void Fruit::setColor() {
+	color = glm::vec3(187 / 255.f, 1.f, 124 / 255.f);
+}

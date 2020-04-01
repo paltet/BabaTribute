@@ -8,6 +8,7 @@ class Fire : public Entity
 public:
 
 	void setAnimations();
+	void setColor();
 
 };
 #endif

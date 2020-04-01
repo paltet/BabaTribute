@@ -18,3 +18,7 @@ string FireText::getIdReferred() {
 	Fire *f = new Fire();
 	return (typeid(*f).name());
 }
+
+void FireText::setColor() {
+	color = glm::vec3(147 / 255.f, 0.f, 34 / 255.f);
+}

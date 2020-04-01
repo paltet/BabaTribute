@@ -8,6 +8,7 @@ class Flag : public Entity
 public:
 
 	void setAnimations();
+	void setColor();
 
 };
 #endif

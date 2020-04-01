@@ -18,3 +18,7 @@ string WallText::getIdReferred() {
 	Wall *w = new Wall();
 	return (typeid(*w).name());
 }
+
+void WallText::setColor() {
+	color = glm::vec3(1.2 / 2.f, 1.2 / 2.f, 1.2 / 2.f);
+}

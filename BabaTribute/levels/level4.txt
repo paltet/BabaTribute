@@ -1,17 +1,17 @@
 LEVEL
-15 15
-bbbbbbbbbbbbbbb
-baaaa         b
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-bbbbbbbbbbbbbbb
-bfkmbgkqbbbbbbb
-bbbbbbbbbbbbbbb
+15 15 30
+              j
+  eeeeeeeeee  k
+ e  ikpgkq  e o
+ elbbbsrbbb  e 
+ ejb  a   b  e 
+ e b      b  e 
+ e bddddd b  e 
+ e b dddddb  e 
+ e bbb  bbb e  
+ e         e   
+ e    bb  e    
+ e       e     
+ e       e  c  
+  eeeeeee      
+fkm         hkn

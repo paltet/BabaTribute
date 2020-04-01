@@ -28,3 +28,7 @@ void Tens::update(int deltaTime, int moves) {
 	if (moves > 99) sprite->changeAnimation(9);
 	else sprite->changeAnimation(moves / 10);
 }
+
+void Number::setColor() {
+	color = glm::vec3(232 / 255.f, 217 / 255.f, 215 / 255.f);
+}

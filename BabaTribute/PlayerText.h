@@ -8,7 +8,7 @@ class PlayerText : public Entity
 public:
 
 	void setAnimations();
-	//void setColor();
+	void setColor();
 	string getIdReferred();
 };
 #endif

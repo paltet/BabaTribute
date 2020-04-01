@@ -1,17 +1,17 @@
 LEVEL
-15 15
-bbbbbbbbbbbbbbb
-baaaaaaaaaaaaab
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-b             b
-bbbbbbbbbbbbbbb
-bfkmbgkqbbbbbbb
-bbbbbbbbbbbbbbb
+15 15 20
+               
+  fkm     gkq  
+               
+  bbbbbbbbbbb  
+  b      t  b  
+  b  h      b  
+  b a       b  
+  b      k  b  
+  bbbbb    nb  
+      b     b  
+   sr b  c  b  
+      bbbbbbb  
+               
+  flu          
+               

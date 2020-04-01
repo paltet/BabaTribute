@@ -13,3 +13,7 @@ void Fire::setAnimations() {
 
 	sprite->changeAnimation(0);
 }
+
+void Fire::setColor() {
+	color = glm::vec3(1.f, 86 / 255.f, 86 / 255.f);
+}

@@ -13,3 +13,7 @@ void Rock::setAnimations() {
 
 	sprite->changeAnimation(0);
 }
+
+void Rock::setColor() {
+	color = glm::vec3(1 / 2.f, 1 / 2.f, 0.f);
+}

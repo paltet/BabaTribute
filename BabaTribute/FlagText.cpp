@@ -18,3 +18,7 @@ string FlagText::getIdReferred() {
 	Flag *w = new Flag();
 	return (typeid(*w).name());
 }
+
+void FlagText::setColor() {
+	color = glm::vec3(1.f, 236 / 255.f, 132 / 255.f);
+}

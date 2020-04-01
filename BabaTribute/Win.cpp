@@ -15,5 +15,5 @@ void Win::setAnimations() {
 }
 
 void Win::setColor() {
-	color = glm::vec3(1.f, 0.f, 1.f);
+	color = glm::vec3(253 / 255.f, 1.f, 150 / 255.f);
 }

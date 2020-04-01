@@ -15,5 +15,5 @@ void Stop::setAnimations() {
 }
 
 void Stop::setColor() {
-	color = glm::vec3(1/2.f, 1.f, 1/3.f);
+	color = glm::vec3(93 / 255.f, 147 / 255.f, 42 / 255.f);
 }

@@ -18,3 +18,7 @@ string FruitText::getIdReferred() {
 	Fruit *f = new Fruit();
 	return (typeid(*f).name());
 }
+
+void FruitText::setColor() {
+	color = glm::vec3(187 / 255.f, 1.f, 124 / 255.f);
+}

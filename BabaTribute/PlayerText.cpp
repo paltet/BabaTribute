@@ -20,8 +20,6 @@ string PlayerText::getIdReferred() {
 	return (typeid(*p).name());
 }
 
-/*
 void PlayerText::setColor() {
-	color = glm::vec3(1.f, 1.f, 0.f);
+	color = glm::vec3(237/255.f, 30/255.f, 192/255.f);
 }
-*/

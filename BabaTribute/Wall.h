@@ -8,6 +8,7 @@ class Wall: public Entity
 public:
 
 	void setAnimations();
+	void setColor();
 
 };
 #endif

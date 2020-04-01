@@ -8,6 +8,7 @@ class Rock : public Entity
 public:
 
 	void setAnimations();
+	void setColor();
 
 };
 #endif

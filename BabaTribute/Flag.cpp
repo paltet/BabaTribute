@@ -13,3 +13,7 @@ void Flag::setAnimations() {
 
 	sprite->changeAnimation(0);
 }
+
+void Flag::setColor() {
+	color = glm::vec3(1.f, 236 / 255.f, 132 / 255.f);
+}

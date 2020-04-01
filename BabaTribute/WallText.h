@@ -9,5 +9,6 @@ public:
 
 	void setAnimations();
 	string getIdReferred();
+	void setColor();
 };
 #endif

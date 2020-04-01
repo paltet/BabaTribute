@@ -7,6 +7,7 @@ class Number : public Entity
 {
 public:
 	void setAnimations();
+	void setColor();
 };
 
 class Unities: public Number

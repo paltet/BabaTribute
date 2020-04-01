@@ -15,5 +15,5 @@ void Defeat::setAnimations() {
 }
 
 void Defeat::setColor() {
-	color = glm::vec3(1.f, 0.f, 1.f);
-}
+	color = glm::vec3(147 / 255.f, 0.f, 34 / 255.f);
+}                                                                                                                                                                                                                                                                                                                                                                                                                                    

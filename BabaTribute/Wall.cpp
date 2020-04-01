@@ -13,3 +13,7 @@ void Wall::setAnimations(){
 
 	sprite->changeAnimation(0);
 }
+
+void Wall::setColor() {
+	color = glm::vec3(1 / 2.f, 1 / 2.f, 1 / 2.f);
+}

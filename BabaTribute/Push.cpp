@@ -15,5 +15,5 @@ void Push::setAnimations() {
 }
 
 void Push::setColor() {
-	color = glm::vec3(0.f, 1.f, 1/6.f);
+	color = glm::vec3(117 / 255.f, 64 / 255.f, 21 / 255.f);
 }

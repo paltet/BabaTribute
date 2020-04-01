@@ -52,6 +52,7 @@ public:
 	void render();
 	void load(string levelFile);
 
+	Input::KEY_STATE getSpecialButton(int key);
 	Input::KEY_STATE getButton(int key);
 
 	void loadText(string line);

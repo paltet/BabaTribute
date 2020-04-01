@@ -9,6 +9,7 @@ public:
 
 	void setAnimations();
 	int eatMoves();
+	void setColor();
 
 };
 #endif

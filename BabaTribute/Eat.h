@@ -8,6 +8,7 @@ class Eat : public Entity
 public:
 
 	void setAnimations();
+	void setColor();
 
 };
 #endif

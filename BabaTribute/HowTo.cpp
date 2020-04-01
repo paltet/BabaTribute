@@ -14,6 +14,7 @@ HowTo::HowTo()
 	red = nullptr;
 	expression = nullptr;
 	keys = nullptr;
+	rkey = nullptr;
 
 	for (int i = 0; i < 3; i++) {
 		rocks[i] = nullptr;
@@ -29,6 +30,7 @@ HowTo::~HowTo()
 	if (red != nullptr) delete red;
 	if (expression != nullptr) delete expression;
 	if (keys != nullptr) delete keys;
+	if (rkey != nullptr) delete rkey;
 
 	for (int i = 0; i < 3; i++) {
 		if (rocks[i] != nullptr) delete rocks[i];
@@ -44,6 +46,7 @@ void HowTo::init() {
 	initShaders();
 	tex.loadFromFile("images/baba.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	keyTex.loadFromFile("images/keys.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	rTex.loadFromFile("images/rkey.png", TEXTURE_PIXEL_FORMAT_RGBA);
 
 	loadKeke();
 	loadRock();
@@ -80,6 +83,7 @@ void HowTo::update(int deltaTime) {
 		rocks[i]->update(deltaTime);
 	}
 	keys->update(deltaTime);
+	rkey->update(deltaTime);
 
 	switch (animation_state) {
 	case SLEEP:
@@ -126,6 +130,7 @@ void HowTo::render() {
 	is->render();
 	keke->render();
 	keys->render();
+	rkey->render();
 
 	for (int i = 0; i < 3; i++) {
 		if (animation_state == LOOKS) texProgram.setUniform4f("color", 1.0f, 0.0f, 0.0f, 1.0f);
@@ -139,7 +144,7 @@ void HowTo::render() {
 		expression->render();
 	}
 
-	text.render("USE ARROW KEYS TO MOVE", glm::vec2(HOWTO_TEXT_SIZE*2, HOWTO_TEXT_SIZE*2), HOWTO_TEXT_SIZE-2, glm::vec4(1.f, 1.f, 1.f, 1.f));
+	text.render("USE ARROW KEYS TO MOVE, 'R' TO RESTART", glm::vec2(HOWTO_TEXT_SIZE*2, HOWTO_TEXT_SIZE*2), HOWTO_TEXT_SIZE-2, glm::vec4(1.f, 1.f, 1.f, 1.f));
 	text.render("CONCATENATE EXPRESSIONS TO ADVANCE", glm::vec2(HOWTO_TEXT_SIZE*2, CAMERA_HEIGHT / 2 - HOWTO_TEXT_SIZE / 2), HOWTO_TEXT_SIZE-2, glm::vec4(1.f, 1.f, 1.f, 1.f));
 	text.render("PRESS ENTER TO GO BACK", glm::vec2(CAMERA_WIDTH/3 - HOWTO_TEXT_SIZE, CAMERA_HEIGHT - HOWTO_TEXT_SIZE*2), HOWTO_TEXT_SIZE, glm::vec4(1.f, 1.f, 1.f, 1.f));
 }
@@ -277,5 +282,13 @@ void HowTo::loadKeys() {
 	keys->setAnimationSpeed(0, 1);
 	keys->addKeyframe(0, glm::vec2(0.f, 0.f));
 	keys->changeAnimation(0);
-	keys->setPosition(glm::vec2(CAMERA_WIDTH / 2 - SPRITE_SIZE*2.5f, HOWTO_TEXT_SIZE * 4));
+	keys->setPosition(glm::vec2(CAMERA_WIDTH / 2 - SPRITE_SIZE*4.f, HOWTO_TEXT_SIZE * 4));
+
+	rkey = Sprite::createSprite(glm::ivec2(SPRITE_SIZE * 2, SPRITE_SIZE * 2), glm::vec2(1.f, 1.f), &rTex, &texProgram);
+	rkey->setNumberAnimations(1);
+	rkey->setAnimationSpeed(0, 1);
+	rkey->addKeyframe(0, glm::vec2(0.f, 0.f));
+	rkey->changeAnimation(0);
+
+	rkey->setPosition(glm::vec2(CAMERA_WIDTH / 2 + SPRITE_SIZE * 2, HOWTO_TEXT_SIZE * 5));
 }

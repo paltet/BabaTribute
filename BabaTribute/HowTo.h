@@ -38,7 +38,7 @@ private:
 	Sprite *keke, *rock, *is, *red, *expression;
 	Sprite *rocks[3];
 
-	Sprite *keys;
+	Sprite *keys, *rkey;
 
 	enum { KEKE_SLEEP, KEKE_WALKS, KEKE_LOOKS };
 
@@ -47,6 +47,7 @@ private:
 
 	Texture tex;
 	Texture keyTex;
+	Texture rTex;
 	ShaderProgram texProgram;
 	
 	glm::mat4 projection;

@@ -62,7 +62,7 @@ bool Game::update(int deltaTime) {
 			}
 			else {
 				menu.init();
-				state = STATE_MENU;
+				state = STATE_CREDITS;
 			}
 		}
 		break;

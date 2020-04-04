@@ -38,10 +38,12 @@ void Menu::init() {
 	pointer->setPosition(glm::vec2(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2));
 
 
-	if (!text.init("fonts/INVASION2000.ttf"))
+	if (!text.init("fonts/INVASION2000.ttf") || !title.init("fonts/kirbyss.ttf"))
 		//if(!text.init("fonts/OpenSans-Bold.ttf"))
 		//if(!text.init("fonts/DroidSerif.ttf"))
 		cout << "Could not load font!!!" << endl;
+
+
 
 	projection = glm::ortho(0.f, float(CAMERA_WIDTH - 1), float(CAMERA_HEIGHT - 1), 0.f);
 }
@@ -49,7 +51,7 @@ void Menu::init() {
 void Menu::update(int deltaTime) {
 	currentTime += deltaTime;
 	pointer->update(deltaTime);
-	pointer->setPosition(glm::vec2(CAMERA_WIDTH / 2 - 130 - 48, CAMERA_HEIGHT / 3 + 50 * state - 25));
+	pointer->setPosition(glm::vec2(CAMERA_WIDTH / 2 - 130 - 48, CAMERA_HEIGHT / 3 + 50 * state - 25 +50));
 
 	if (Game::instance().input.getSpecialKey(GLUT_KEY_UP) == Game::instance().input.KEY_PRESSED)
 	{
@@ -88,8 +90,9 @@ void Menu::render() {
 	pointer->render();
 
 	for (int i = 0; i < 4; i++) {
-		text.render(options[i], glm::vec2(CAMERA_WIDTH / 2 - 130, CAMERA_HEIGHT/3 + 50*i), MENU_TEXT_SIZE, glm::vec4(1.f, 1.f, 1.f, 1.f));
+		text.render(options[i], glm::vec2(CAMERA_WIDTH / 2 - 130, CAMERA_HEIGHT/3 + 50*i + 50), MENU_TEXT_SIZE, glm::vec4(1.f, 1.f, 1.f, 1.f));
 	}
+	title.render(gameName, glm::vec2(CAMERA_WIDTH / 2 - 200, MENU_TEXT_SIZE*4), 35, glm::vec4(1.f, 1.f, 1.f, 1.f));
 }
 
 void Menu::initShaders()

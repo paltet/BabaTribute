@@ -61,7 +61,7 @@ bool Game::update(int deltaTime) {
 				scene.loadText("LEVEL " + to_string(currentlevel+1));
 			}
 			else {
-				menu.init();
+				credits.init();
 				state = STATE_CREDITS;
 			}
 		}

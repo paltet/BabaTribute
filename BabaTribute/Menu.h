@@ -27,7 +27,7 @@ private:
 private:
 	float currentTime;
 
-	Text text;
+	Text text, title;
 	Sprite *pointer;
 	Texture tex;
 
@@ -36,6 +36,7 @@ private:
 	ShaderProgram texProgram;
 	glm::mat4 projection;
 	string options[4] = { "PLAY", "HOW TO PLAY", "CREDITS", "EXIT" };
+	string gameName = "KEKE IS HUNGRY";
 };
 
 #endif
